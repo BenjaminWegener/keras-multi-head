@@ -12,7 +12,7 @@ class MultiHeadAttention(keras.layers.Layer):
             raise ValueError('Invalid input')
         self.d_model = input_shape[-1]
         self.input_size = input_shape[-2]
-        self.linformer_depth = input_shape[-1]
+        self.linformer_depth = 64
 
         return super().build(input_shape)
 
@@ -59,7 +59,7 @@ class MultiHeadAttention(keras.layers.Layer):
         infinity_mask = keras.layers.Lambda(lambda x: (x - 1) * 1e16, output_shape = lambda s: (None, s[1], s[2]), name = 'infinity_mask')(causal_mask) # 0, 1024, 64
         
         result = attention_model([queries, keys, values, causal_mask, infinity_mask])
-        return keras.layers.Dense(depth)(result)
+        return keras.layers.Dense(self.d_model)(result)
         
     def compute_output_shape(self, input_shape):
         return input_shape
