@@ -11,6 +11,8 @@ class MultiHeadAttention(keras.layers.Layer):
         if not isinstance(input_shape, tuple):
             raise ValueError('Invalid input')
         d_model = input_shape[-1]
+        input_size = input_shape[-2]
+        linformer_depth = input_shape[-1]
 
         return super().build(input_shape)
 
